@@ -13,14 +13,17 @@ import {
   Bot,
   Menu,
   X,
+  SearchSlash,
+  CircleUserRound,
 } from "lucide-react";
 
 const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Explore", href: "/explore", icon: Compass },
-  { name: "Planner", href: "/planner", icon: Calendar },
   { name: "Heritage", href: "/heritage", icon: Globe },
-  { name: "Saved", href: "/saved", icon: Heart },
+  { name: "About us", href: "/about", icon: SearchSlash },
+  { name: "Contact us", href: "/contact", icon: CircleUserRound},
+
 ];
 
 export default function Navbar() {
