@@ -20,7 +20,6 @@ import {
 const navItems = [
   { name: "Home", href: "/", icon: Home },
   { name: "Explore", href: "/explore", icon: Compass },
-  { name: "Heritage", href: "/heritage", icon: Globe },
   { name: "About us", href: "/about", icon: SearchSlash },
   { name: "Contact us", href: "/contact", icon: CircleUserRound},
 
@@ -31,7 +30,7 @@ export default function Navbar() {
   const pathname = usePathname();
 
   return (
-    <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between px-4 py-3 bg-white border-b border-orange-100 shadow-sm lg:px-8">
+    <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between px-4 py-8 bg-white border-b border-orange-100 shadow-sm lg:px-8">
       <Link href="/" className="flex items-center gap-2 text-2xl font-semibold text-orange-600">
         <Utensils className="text-orange-500" size={28} />
         <span>EnjeraMind</span>
