@@ -1,7 +1,21 @@
+"use client";
+
 import Link from "next/link";
 import { Mail, Lock, ArrowRight } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
+  const signIn = async () => {
+    try {
+      await authClient.signIn.social({
+        provider: "google",
+        callbackURL: "/dashboard",
+      });
+    } catch (err) {
+      console.error("Google sign in error:", err);
+    }
+  };
+
   return (
     <main className="min-h-screen bg-linear-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-orange-100 p-8">
@@ -9,12 +23,17 @@ export default function SignInPage() {
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
             Welcome <span className="text-orange-500">back</span>
           </h1>
-          <p className="text-gray-600">Sign in to continue your culinary journey</p>
+          <p className="text-gray-600">
+            Sign in to continue your culinary journey
+          </p>
         </div>
 
-        {/* Social Sign In */}
         <div className="space-y-3 mb-6">
-          <button className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-xl transition">
+          <button
+            type="button"
+            className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-xl transition"
+            onClick={signIn}
+          >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
                 fill="#4285F4"
@@ -35,27 +54,29 @@ export default function SignInPage() {
             </svg>
             Sign in with Google
           </button>
-          <button className="w-full flex items-center justify-center gap-3 bg-[#24292F] hover:bg-[#1b1f24] text-white font-medium py-3 px-4 rounded-xl transition">
-            <svg className="w-5 h-5 fill-current" viewBox="0 0 24 24">
-              <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.03-2.682-.103-.253-.447-1.27.098-2.646 0 0 .84-.269 2.75 1.025.8-.223 1.65-.334 2.5-.334.85 0 1.7.111 2.5.334 1.91-1.294 2.75-1.025 2.75-1.025.545 1.376.201 2.393.099 2.646.64.698 1.03 1.591 1.03 2.682 0 3.841-2.337 4.687-4.565 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
-            </svg>
-            Sign in with GitHub
-          </button>
         </div>
 
         <div className="relative flex items-center mb-6">
           <div className="grow border-t border-orange-100"></div>
-          <span className="shrink mx-4 text-sm text-gray-400">or sign in with email</span>
+          <span className="shrink mx-4 text-sm text-gray-400">
+            or sign in with email
+          </span>
           <div className="grow border-t border-orange-100"></div>
         </div>
 
         <form className="space-y-5">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <Mail
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={18}
+              />
               <input
                 type="email"
                 id="email"
@@ -66,11 +87,17 @@ export default function SignInPage() {
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
               Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <Lock
+                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+                size={18}
+              />
               <input
                 type="password"
                 id="password"
@@ -91,7 +118,11 @@ export default function SignInPage() {
                 Remember me
               </label>
             </div>
-            <Link href="/forgot-password" className="text-sm text-orange-600 hover:underline">
+
+            <Link
+              href="/forgot-password"
+              className="text-sm text-orange-600 hover:underline"
+            >
               Forgot password?
             </Link>
           </div>
@@ -107,7 +138,10 @@ export default function SignInPage() {
         <div className="mt-6 text-center">
           <p className="text-gray-600">
             Don't have an account?{" "}
-            <Link href="/signup" className="text-orange-600 font-medium hover:underline">
+            <Link
+              href="/signup"
+              className="text-orange-600 font-medium hover:underline"
+            >
               Sign up
             </Link>
           </p>

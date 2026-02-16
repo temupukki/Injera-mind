@@ -16,13 +16,15 @@ import {
   SearchSlash,
   CircleUserRound,
 } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
+
+const { data: session } = await authClient.getSession()
 
 const navItems = [
-  { name: "Home", href: "/", icon: Home },
-  { name: "Explore", href: "/explore", icon: Compass },
-  { name: "About us", href: "/about", icon: SearchSlash },
-  { name: "Contact us", href: "/contact", icon: CircleUserRound},
-
+  { name: "Dashboard", href: "/dashboard", icon: Home },
+  { name: "Explore", href: "/dashboard/explore", icon: Compass },
+  { name: "About us", href: "/dashboard/about", icon: SearchSlash },
+  { name: "Contact us", href: "/dashboard/contact", icon: CircleUserRound },
 ];
 
 export default function DashNavbar() {
@@ -31,7 +33,10 @@ export default function DashNavbar() {
 
   return (
     <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between px-4 py-8 bg-white border-b border-orange-100 shadow-sm lg:px-8">
-      <Link href="/" className="flex items-center gap-2 text-2xl font-semibold text-orange-600">
+      <Link
+        href="/dashboard"
+        className="flex items-center gap-2 text-2xl font-semibold text-orange-600"
+      >
         <Utensils className="text-orange-500" size={28} />
         <span>EnjeraMind</span>
       </Link>
@@ -60,19 +65,32 @@ export default function DashNavbar() {
       <div className="flex items-center gap-4">
         <button className="relative p-2 text-gray-700 hover:text-orange-600 transition-colors">
           <Bot size={24} />
-        
         </button>
 
         <div className="hidden sm:flex items-center gap-3">
-          <Link href="/signin" className="text-gray-700 hover:text-orange-600 font-medium transition">
-            Sign in
-          </Link>
           <Link
-            href="/signup"
-            className="bg-orange-500 text-white px-4 py-2 rounded-full font-medium hover:bg-orange-600 transition"
+            href="/dashboard/profile"
+            className="flex items-center gap-2 text-gray-700 hover:text-orange-600 font-medium transition"
           >
-            Sign up
+            <img
+              src="/default-avatar.png"
+              alt="Profile"
+              className="w-9 h-9 rounded-full object-cover border"
+            />
+            <span>{session?.user.name}</span>
           </Link>
+          <button
+            onClick={async () => {
+              await authClient.signOut();
+            }}
+          >
+            <Link
+              href="/signup"
+              className="bg-orange-500 text-white px-4 py-2 rounded-full font-medium hover:bg-orange-600 transition"
+            >
+              Log out
+            </Link>
+          </button>
         </div>
 
         <button
