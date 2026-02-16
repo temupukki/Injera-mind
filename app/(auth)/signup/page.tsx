@@ -33,7 +33,7 @@ export default function SignUpPage() {
     e.preventDefault();
     setErrors({});
 
-    // Validation
+   
     const newErrors: typeof errors = {};
 
     if (!name.trim()) {
@@ -82,10 +82,10 @@ export default function SignUpPage() {
             // Optionally set a more granular loading state
           },
           onSuccess: () => {
-            router.push("/dashboard");
+            router.push("/signin");
           },
           onError: (ctx) => {
-            // Map common error messages
+       
             const errorMessage = ctx.error.message;
             let fieldErrors: typeof errors = {};
 
@@ -111,7 +111,7 @@ export default function SignUpPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center px-4 py-12">
+    <main className="min-h-screen bg-linear-to-br from-orange-50 via-white to-orange-50 flex items-center justify-center px-4 py-12">
       <div className="max-w-md w-full bg-white/80 backdrop-blur-sm rounded-3xl shadow-xl border border-orange-100 p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
@@ -122,7 +122,7 @@ export default function SignUpPage() {
           </p>
         </div>
 
-        {/* Social Sign Up */}
+      
         <div className="space-y-3 mb-6">
           <button
             type="button"
