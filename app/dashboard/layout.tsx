@@ -9,13 +9,13 @@ export default function MainLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+   
       <body>
         <DashNavbar/>
         {children}
         <DashFooter/>
         
       </body>
-    </html>
+  
   );
 }
