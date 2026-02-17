@@ -79,7 +79,7 @@ export default function SignUpPage() {
         },
         {
           onRequest: () => {
-            // Optionally set a more granular loading state
+            
           },
           onSuccess: () => {
             router.push("/signin");
@@ -173,14 +173,14 @@ export default function SignUpPage() {
               Full Name
             </label>
             <div className="relative">
-              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-black" size={18} />
               <input
                 type="text"
                 id="name"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 placeholder="Meron Tesfaye"
-                className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
+                className={`w-full pl-10 pr-4 py-3 placeholder:text-gray-300 text-gray-700 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
                   errors.name ? "border-red-500" : "border-orange-200"
                 }`}
                 disabled={loading}
@@ -189,7 +189,7 @@ export default function SignUpPage() {
             {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
           </div>
 
-          {/* Email */}
+     
           <div>
             <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
               Email Address
@@ -202,7 +202,7 @@ export default function SignUpPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="meron@example.com"
-                className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
+                className={`w-full pl-10 pr-4 py-3 placeholder:text-gray-300 text-gray-700 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
                   errors.email ? "border-red-500" : "border-orange-200"
                 }`}
                 disabled={loading}
@@ -224,7 +224,7 @@ export default function SignUpPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
+                className={`w-full pl-10  placeholder:text-gray-300 text-gray-700 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
                   errors.password ? "border-red-500" : "border-orange-200"
                 }`}
                 disabled={loading}
@@ -247,7 +247,7 @@ export default function SignUpPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="••••••••"
-                className={`w-full pl-10 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
+                className={`w-full pl-10 placeholder:text-gray-300 text-gray-700 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm ${
                   errors.confirmPassword ? "border-red-500" : "border-orange-200"
                 }`}
                 disabled={loading}
@@ -269,7 +269,7 @@ export default function SignUpPage() {
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
                 placeholder="https://example.com/photo.jpg"
-                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
+                className="w-full pl-10 placeholder:text-gray-300 text-gray-700 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
                 disabled={loading}
               />
             </div>
@@ -300,14 +300,13 @@ export default function SignUpPage() {
             {errors.terms && <p className="text-red-500 text-xs mt-1">{errors.terms}</p>}
           </div>
 
-          {/* General error */}
           {errors.general && (
             <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
               {errors.general}
             </div>
           )}
 
-          {/* Submit button */}
+
           <button
             type="submit"
             disabled={loading}

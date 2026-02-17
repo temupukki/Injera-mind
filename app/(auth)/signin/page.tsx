@@ -1,11 +1,20 @@
 "use client";
 
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Mail, Lock, ArrowRight } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
 export default function SignInPage() {
-  const signIn = async () => {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handleGoogleSignIn = async () => {
     try {
       await authClient.signIn.social({
         provider: "google",
@@ -13,7 +22,40 @@ export default function SignInPage() {
       });
     } catch (err) {
       console.error("Google sign in error:", err);
+      setError("Google sign in failed. Please try again.");
     }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError(null);
+
+    if (!email || !password) {
+      setError("Email and password are required");
+      return;
+    }
+
+    setLoading(true);
+    await authClient.signIn.email(
+      {
+        email,
+        password,
+        callbackURL: "/dashboard",
+        rememberMe,
+      },
+      {
+        onRequest: () => {
+          // Optionally set loading state (already set)
+        },
+        onSuccess: () => {
+          router.push("/dashboard");
+        },
+        onError: (ctx) => {
+          setError(ctx.error.message);
+          setLoading(false);
+        },
+      }
+    );
   };
 
   return (
@@ -32,7 +74,7 @@ export default function SignInPage() {
           <button
             type="button"
             className="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium py-3 px-4 rounded-xl transition"
-            onClick={signIn}
+            onClick={handleGoogleSignIn}
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
               <path
@@ -64,7 +106,7 @@ export default function SignInPage() {
           <div className="grow border-t border-orange-100"></div>
         </div>
 
-        <form className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label
               htmlFor="email"
@@ -80,8 +122,11 @@ export default function SignInPage() {
               <input
                 type="email"
                 id="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="meron@example.com"
-                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
+                className="placeholder:text-gray-300 text-gray-700 w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
+                disabled={loading}
               />
             </div>
           </div>
@@ -101,8 +146,11 @@ export default function SignInPage() {
               <input
                 type="password"
                 id="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
+                className="placeholder:text-gray-300 text-gray-700 w-full pl-10 pr-4 py-3 border border-orange-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-500 bg-white/70 backdrop-blur-sm"
+                disabled={loading}
               />
             </div>
           </div>
@@ -112,7 +160,10 @@ export default function SignInPage() {
               <input
                 type="checkbox"
                 id="remember"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
                 className="w-4 h-4 text-orange-500 border-orange-300 rounded focus:ring-orange-500"
+                disabled={loading}
               />
               <label htmlFor="remember" className="ml-2 text-sm text-gray-600">
                 Remember me
@@ -127,11 +178,18 @@ export default function SignInPage() {
             </Link>
           </div>
 
+          {error && (
+            <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+              {error}
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg"
+            disabled={loading}
+            className="w-full bg-orange-500 text-white px-6 py-3 rounded-xl font-semibold hover:bg-orange-600 transition flex items-center justify-center gap-2 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Sign In <ArrowRight size={18} />
+            {loading ? "Signing in..." : "Sign In"} {!loading && <ArrowRight size={18} />}
           </button>
         </form>
 
