@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { authClient } from "@/lib/auth-client";
 
-const { data: session } = await authClient.getSession()
+const { data: session } = await authClient.getSession();
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: Home },
@@ -30,6 +30,9 @@ const navItems = [
 export default function DashNavbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const pathname = usePathname();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => setMounted(true), []);
 
   return (
     <nav className="sticky top-0 z-50 flex flex-wrap items-center justify-between px-4 py-8 bg-white border-b border-orange-100 shadow-sm lg:px-8">
@@ -77,7 +80,7 @@ export default function DashNavbar() {
               alt="Profile"
               className="w-9 h-9 rounded-full object-cover border"
             />
-            <span>{session?.user.name}</span>
+            <span>{mounted ? session?.user?.name : ""}</span>
           </Link>
           <button
             onClick={async () => {
@@ -85,7 +88,7 @@ export default function DashNavbar() {
             }}
           >
             <Link
-              href="/signup"
+              href="/"
               className="bg-orange-500 text-white px-4 py-2 rounded-full font-medium hover:bg-orange-600 transition"
             >
               Log out
