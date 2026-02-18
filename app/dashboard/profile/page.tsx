@@ -117,8 +117,11 @@ export default function ProfilePage() {
                       <img src={formData.image} alt="Profile" className="w-full h-full object-cover" />
                     ) : (
                       <User className="w-14 h-14 text-orange-400" />
+                      
                     )}
+
                   </div>
+                  
                 </div>
                 <label className="absolute bottom-1 right-1 bg-orange-500 text-white p-2.5 rounded-full cursor-pointer hover:bg-orange-600 active:scale-95 transition-all shadow-lg border-2 border-white">
                   <Camera size={16} />
@@ -126,7 +129,7 @@ export default function ProfilePage() {
                 </label>
               </div>
               <div className="flex-1 text-center sm:text-left mb-1">
-                <h2 className="text-2xl font-bold text-black -mt-10">{user?.name || "Member"}</h2>
+                <h2 className="text-2xl font-bold text-black ">{user?.name || "Member"}</h2>
                 <p className="text-gray-500">{user?.email}</p>
               
               </div>
