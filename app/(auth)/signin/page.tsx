@@ -45,7 +45,6 @@ export default function SignInPage() {
       },
       {
         onRequest: () => {
-          // Optionally set loading state (already set)
         },
         onSuccess: () => {
           router.push("/dashboard");

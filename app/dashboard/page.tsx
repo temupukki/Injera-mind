@@ -1,4 +1,3 @@
-"use client"
 import Link from "next/link";
 import {
   Camera,
@@ -17,7 +16,10 @@ import {
   Utensils,
 } from "lucide-react";
 
-export default function Home() {
+
+
+export default async function Home() {
+
   return (
     <main className="min-h-screen bg-white">
 
