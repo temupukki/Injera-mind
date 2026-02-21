@@ -21,15 +21,14 @@ import {
   Shuffle,
 } from "lucide-react";
 
-// -------------------- Types --------------------
 interface GenerateClientProps {
   user: {
     name: string;
     email: string;
     image?: string;
   };
-  initialIngredients: string; // May be undefined on first visit
-  initialFilters: string[]; // May be undefined
+  initialIngredients: string;
+  initialFilters: string[];
 }
 
 type Filter = "vegetarian" | "quick" | "spicy" | "gluten-free";
@@ -52,7 +51,7 @@ interface Recipe {
   image?: string;
 }
 
-// -------------------- Constants --------------------
+
 const ALLOWED_FILTERS: Filter[] = [
   "vegetarian",
   "quick",
@@ -60,11 +59,9 @@ const ALLOWED_FILTERS: Filter[] = [
   "gluten-free",
 ];
 
-// Type guard
 const isValidFilter = (filter: string): filter is Filter =>
   ALLOWED_FILTERS.includes(filter as Filter);
 
-// Mock recipe (simulates AI generation)
 const MOCK_RECIPE: Recipe = {
   title: "Spiced Chicken & Rice Bowl",
   description:
@@ -100,7 +97,7 @@ const MOCK_RECIPE: Recipe = {
   tags: ["High-Protein", "One-Pot", "Dairy-Free"],
 };
 
-// Random ingredient sets for the "Surprise Me" button
+
 const SURPRISE_INGREDIENTS = [
   "chicken, tomatoes, onions, garlic, rice",
   "salmon, lemon, dill, potatoes, asparagus",
@@ -109,7 +106,6 @@ const SURPRISE_INGREDIENTS = [
   "mushrooms, spinach, cream, pasta, parmesan",
 ];
 
-// -------------------- Helper Components --------------------
 function FilterChip({
   label,
   active,
