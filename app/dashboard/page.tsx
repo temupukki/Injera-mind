@@ -1,277 +1,242 @@
+
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
-  Camera,
-  Sparkles,
-  Salad,
   ChefHat,
-  Globe,
-  Calendar,
-  Brain,
+  Compass,
+  Settings,
+  Search,
+  Flame,
   Leaf,
-  ArrowRight,
-  Upload,
-  Type,
-  Sliders,
-  Bot,
-  Utensils,
-  Star,
-  Zap,
-  Shield,
-  User,
+  Wheat,
+  Sparkles,
+  Smile,
+  Coffee,
+  Pizza,
 } from "lucide-react";
 
-export default async function Home() {
+interface DashboardClientProps {
+  user: {
+    name: string;
+    email: string;
+    image?: string;
+  };
+}
+
+type Filter = "vegetarian" | "quick" | "spicy" | "gluten-free";
+
+export default function DashboardClient({ user }: DashboardClientProps) {
+  const router = useRouter();
+  const [ingredients, setIngredients] = useState("");
+  const [selectedFilters, setSelectedFilters] = useState<Filter[]>([]);
+
+  const toggleFilter = (filter: Filter) => {
+    setSelectedFilters((prev) =>
+      prev.includes(filter) ? prev.filter((f) => f !== filter) : [...prev, filter]
+    );
+  };
+
+  const handleGenerate = () => {
+    const params = new URLSearchParams();
+    if (ingredients) params.set("q", ingredients);
+    selectedFilters.forEach((f) => params.append("filters", f));
+    router.push(`/generate?${params.toString()}`);
+  };
+
   return (
-    <main className="min-h-screen bg-gradient-to-b from-orange-50 via-white to-white">
-      {/* Hero Section with animated background */}
-      <section className="relative overflow-hidden px-4 py-20 md:py-28">
-        {/* Abstract background elements */}
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-orange-200/20 via-transparent to-transparent"></div>
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-[0.02]"></div>
-        <div className="absolute top-20 -left-20 w-72 h-72 bg-orange-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-20 -right-20 w-72 h-72 bg-amber-200 rounded-full mix-blend-multiply filter blur-3xl opacity-20 animate-blob animation-delay-2000"></div>
+    <main className="min-h-screen bg-[radial-gradient(ellipse_at_top,var(--tw-gradient-stops))] from-orange-100 via-amber-50 to-white">
 
-        <div className="relative max-w-7xl mx-auto">
-          <div className="text-center max-w-3xl mx-auto">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-orange-200 rounded-full px-4 py-2 mb-6 shadow-sm">
-              <Sparkles className="w-4 h-4 text-orange-500" />
-              <span className="text-sm font-medium text-gray-700">AI-Powered Culinary Assistant</span>
-            </div>
+      <div className="absolute top-0 left-0 w-full overflow-hidden opacity-10 pointer-events-none">
+        <div className="flex justify-around text-6xl mt-4 text-orange-300 rotate-12 scale-150">
+          🥑 🍅 🧄 🥕 🧅 🫑
+        </div>
+      </div>
 
-            <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6 leading-tight">
-              Your AI Chef for{' '}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-600 to-amber-600">
-                Cultural & Healthy
-              </span>{' '}
-              Meals
+      <div className="relative max-w-6xl mx-auto px-4 py-8 sm:py-12">
+      
+        <div className="mb-10 flex items-center gap-3">
+          <div className="bg-orange-200 p-3 rounded-full border-4 border-white shadow-lg">
+            <Smile size={32} className="text-orange-600" />
+          </div>
+          <div>
+            <h1 className="text-4xl sm:text-5xl font-black text-gray-800">
+              Hey, Chef! 
             </h1>
-            <p className="text-lg md:text-xl text-gray-600 mb-10 max-w-2xl mx-auto">
-              Snap ingredients, type what you have, or set your diet — get
-              personalized recipes with nutrition facts, cultural twists, and
-              AI-powered guidance.
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="/explore"
-                className="group bg-gradient-to-r from-orange-500 to-amber-500 text-white px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl hover:shadow-orange-500/25 transition-all duration-300 flex items-center justify-center gap-2 transform hover:scale-105"
-              >
-                Start Cooking <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
-              </Link>
-              <Link
-                href="/signup"
-                className="bg-white/80 backdrop-blur-sm border-2 border-orange-500 text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:bg-orange-50 transition-all hover:shadow-lg flex items-center justify-center"
-              >
-                Create Free Account
-              </Link>
-            </div>
-          </div>
-
-          {/* Input methods cards - improved design */}
-          <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-5 max-w-4xl mx-auto">
-            {[
-              { icon: Type, title: "Type ingredients", desc: '"chicken, tomatoes, onion"' },
-              { icon: Camera, title: "Upload photo", desc: "Snap your fridge contents" },
-              { icon: Sliders, title: "Dietary preferences", desc: "Vegan, keto, allergies" },
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                className="group bg-white/70 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-orange-100 hover:shadow-xl hover:border-orange-300 transition-all duration-300 flex items-center gap-4 transform hover:-translate-y-1"
-              >
-                <div className="bg-gradient-to-br from-orange-100 to-amber-100 p-3 rounded-full group-hover:scale-110 transition-transform">
-                  <item.icon className="text-orange-600" size={24} />
-                </div>
-                <div>
-                  <h3 className="font-semibold text-gray-800">{item.title}</h3>
-                  <p className="text-sm text-gray-500">{item.desc}</p>
-                </div>
-              </div>
-            ))}
+            <p className="text-lg text-gray-600 mt-1">Ready to cook something amazing today?</p>
           </div>
         </div>
-      </section>
 
-      {/* Stats Section (new) */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {[
-            { value: "10k+", label: "Recipes", icon: Salad },
-            { value: "50k+", label: "Happy Cooks", icon: User },
-            { value: "100+", label: "Cultures", icon: Globe },
-            { value: "24/7", label: "AI Support", icon: Bot },
-          ].map((stat, idx) => (
-            <div key={idx} className="bg-white/50 backdrop-blur-sm rounded-xl p-6 text-center border border-orange-100 shadow-sm">
-              <stat.icon className="w-8 h-8 text-orange-500 mx-auto mb-2" />
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
-              <div className="text-sm text-gray-600">{stat.label}</div>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-14">
+          <QuickOption
+            href="#generate"
+            icon={<ChefHat size={28} />}
+            title="Generate Recipe"
+            description="From your ingredients"
+            color="orange"
+          />
+          <QuickOption
+            href="/explore"
+            icon={<Compass size={28} />}
+            title="Explore Recipes"
+            description="Discover new dishes"
+            color="amber"
+          />
+          <QuickOption
+            href="/preferences"
+            icon={<Settings size={28} />}
+            title="Preferences"
+            description="Diet & health goals"
+            color="orange"
+          />
         </div>
-      </section>
 
-      {/* Recipe Card Showcase - improved */}
-      <section className="max-w-7xl mx-auto px-4 py-20">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            What you'll get
-          </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Instant AI‑generated recipe cards with step‑by‑step instructions and
-            full nutrition breakdown.
+        {/* Main action – big, bold, and friendly */}
+        <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border-2 border-orange-200 p-8 sm:p-10">
+          <div className="flex items-center gap-3 mb-4">
+            <Sparkles size={32} className="text-orange-500" />
+            <h2 className="text-3xl font-bold text-gray-800">What's in your kitchen?</h2>
+          </div>
+          <p className="text-gray-600 text-lg mb-6">
+            List the ingredients you have — we'll whip up a custom recipe just for you.
           </p>
-        </div>
 
-        <div className="max-w-md mx-auto group">
-          <div className="bg-white rounded-3xl shadow-2xl border border-orange-100 overflow-hidden transform transition-all duration-300 hover:scale-[1.02] hover:shadow-orange-200/50">
-            <div className="h-48 bg-gradient-to-br from-orange-300 to-amber-300 relative flex items-center justify-center">
-              <Salad size={64} className="text-white drop-shadow-lg" />
-              <span className="absolute top-4 right-4 bg-white/90 backdrop-blur-sm text-orange-600 px-3 py-1 rounded-full text-sm font-medium shadow-lg">
-                ✨ AI Generated
-              </span>
-            </div>
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-2xl font-bold text-gray-800">Spiced Lentil Stew</h3>
-                  <p className="text-orange-600 flex items-center gap-1 mt-1">
-                    <Globe size={16} /> Ethiopian Heritage
-                  </p>
-                </div>
-                <div className="bg-green-100 px-3 py-1 rounded-full text-sm font-medium text-green-800">
-                  Vegan
-                </div>
-              </div>
-              <div className="flex gap-4 text-sm text-gray-600 mb-4">
-                <span className="flex items-center gap-1">🔥 320 kcal</span>
-                <span className="flex items-center gap-1">🥑 12g fat</span>
-                <span className="flex items-center gap-1">💪 18g protein</span>
-              </div>
-              <p className="text-gray-700 mb-4">
-                A fragrant one‑pot stew made with red lentils, berbere spice, and
-                tomatoes. Perfect with injera or rice.
-              </p>
-              <div className="bg-orange-50 p-4 rounded-xl">
-                <h4 className="font-semibold text-gray-800 mb-2 flex items-center gap-2">
-                  <ChefHat size={18} className="text-orange-600" /> Quick steps
-                </h4>
-                <ol className="text-sm text-gray-700 list-decimal list-inside space-y-1">
-                  <li>Sauté onion, garlic, and ginger.</li>
-                  <li>Add berbere, lentils, and tomatoes.</li>
-                  <li>Simmer 25 min until lentils are soft.</li>
-                  <li>Serve with fresh herbs.</li>
-                </ol>
-              </div>
-              <div className="mt-4 flex justify-end">
-                <Link href="#" className="text-orange-600 font-medium flex items-center gap-1 hover:gap-2 transition-all group">
-                  View full recipe <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </div>
+          {/* Ingredient input – big textarea */}
+          <div className="mb-8">
+            <label htmlFor="ingredients" className="block text-sm font-medium text-gray-700 mb-2 sr-only">
+              Ingredients
+            </label>
+            <div className="relative">
+              <Search className="absolute left-5 top-5 text-gray-400" size={24} />
+              <textarea
+                id="ingredients"
+                rows={4}
+                value={ingredients}
+                onChange={(e) => setIngredients(e.target.value)}
+                placeholder="e.g., chicken, tomatoes, onions, garlic, maybe some leftover rice..."
+                className="w-full pl-14 pr-5 py-5 text-lg border-2 border-orange-200 rounded-3xl focus:outline-none focus:ring-4 focus:ring-orange-300 focus:border-orange-400 bg-white/80 placeholder:text-gray-400 resize-none"
+              />
             </div>
           </div>
-        </div>
-      </section>
 
-      {/* Features Section with better cards */}
-      <section className="bg-gradient-to-b from-orange-50/50 to-white py-20 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              More than a recipe app
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              Discover a complete culinary AI platform
+          {/* Filters – chip buttons with icons */}
+          <div className="mb-10">
+            <p className="text-sm font-medium text-gray-700 mb-3 flex items-center gap-2">
+              <Flame size={16} className="text-orange-500" /> Optional filters (pick your vibe)
             </p>
+            <div className="flex flex-wrap gap-3">
+              <FilterChip
+                label="🌱 Vegetarian"
+                icon={<Leaf size={16} />}
+                active={selectedFilters.includes("vegetarian")}
+                onClick={() => toggleFilter("vegetarian")}
+              />
+              <FilterChip
+                label="⚡ Quick (<30min)"
+                icon={<Flame size={16} />}
+                active={selectedFilters.includes("quick")}
+                onClick={() => toggleFilter("quick")}
+              />
+              <FilterChip
+                label="🔥 Spicy"
+                icon={<Flame size={16} />}
+                active={selectedFilters.includes("spicy")}
+                onClick={() => toggleFilter("spicy")}
+              />
+              <FilterChip
+                label="🌾 Gluten-Free"
+                icon={<Wheat size={16} />}
+                active={selectedFilters.includes("gluten-free")}
+                onClick={() => toggleFilter("gluten-free")}
+              />
+            </div>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            <FeatureCard
-              icon={<Brain className="text-orange-600" size={32} />}
-              title="AI Recipe Generation"
-              description="No matching recipe? Our AI creates unique dishes from your ingredients and preferences."
-            />
-            <FeatureCard
-              icon={<Leaf className="text-orange-600" size={32} />}
-              title="Smart Nutrition"
-              description="Automatic calorie and macro calculation for every generated recipe."
-            />
-            <FeatureCard
-              icon={<Bot className="text-orange-600" size={32} />}
-              title="AI Chatbot Guidance"
-              description="Ask cooking questions, get substitutions, or cultural tips in real time."
-            />
-            <FeatureCard
-              icon={<Globe className="text-orange-600" size={32} />}
-              title="Cultural Heritage"
-              description="Explore and preserve traditional dishes from around the world."
-            />
-            <FeatureCard
-              icon={<Calendar className="text-orange-600" size={32} />}
-              title="Weekly Meal Planner"
-              description="Plan your week, generate shopping lists, and stay on track."
-            />
-            <FeatureCard
-              icon={<Sparkles className="text-orange-600" size={32} />}
-              title="Visual Recognition"
-              description="Snap a photo of ingredients or a dish, and we'll identify and suggest recipes."
-            />
-          </div>
+          {/* Generate button – big, juicy, with animation */}
+          <button
+            onClick={handleGenerate}
+            disabled={!ingredients.trim()}
+            className="w-full bg-gradient-to-r from-orange-500 to-amber-500 text-white py-5 px-6 rounded-2xl font-bold text-xl hover:shadow-2xl hover:shadow-orange-500/30 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-3 transform hover:scale-[1.02] active:scale-[0.98]"
+          >
+            <Sparkles size={24} />
+            Generate My Recipe
+          </button>
         </div>
-      </section>
 
-      <section className="max-w-6xl mx-auto px-4 py-20">
-        <div className="bg-white/50 backdrop-blur-sm rounded-3xl p-8 md:p-12 border border-orange-100 shadow-xl">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900">Trusted by home cooks everywhere</h2>
+        {/* Fun extra section – recent activity or just a cute tip */}
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 border-2 border-orange-100 shadow-lg flex items-start gap-4">
+            <div className="bg-orange-200 p-3 rounded-full">
+              <Coffee size={24} className="text-orange-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-800 text-lg">Recently cooked</h3>
+              <p className="text-gray-500">Your last recipes will show up here. Start generating!</p>
+            </div>
           </div>
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              { name: "Sarah K.", text: "EnjeraMind helped me recreate my grandmother's Ethiopian recipes with modern twists. Amazing!" },
-              { name: "Michael T.", text: "The AI planner saves me hours every week. I eat healthier and discover new cuisines." },
-              { name: "Priya R.", text: "Finally an app that understands my dietary restrictions and suggests delicious meals." },
-            ].map((testimonial, idx) => (
-              <div key={idx} className="bg-white p-6 rounded-xl shadow-md border border-orange-50">
-                <div className="flex text-orange-400 mb-3">{"★".repeat(5)}</div>
-                <p className="text-gray-700 mb-4">"{testimonial.text}"</p>
-                <p className="font-semibold text-gray-800">— {testimonial.name}</p>
-              </div>
-            ))}
+          <div className="bg-white/70 backdrop-blur-sm rounded-3xl p-6 border-2 border-orange-100 shadow-lg flex items-start gap-4">
+            <div className="bg-orange-200 p-3 rounded-full">
+              <Pizza size={24} className="text-orange-600" />
+            </div>
+            <div>
+              <h3 className="font-bold text-gray-800 text-lg">Tip of the day</h3>
+              <p className="text-gray-600">Add a pinch of cinnamon to tomato sauce – you'll thank us later!</p>
+            </div>
           </div>
         </div>
-      </section>
 
-      {/* CTA with gradient */}
-      <section className="max-w-4xl mx-auto px-4 pb-20">
-        <div className="bg-gradient-to-r from-orange-500 to-amber-500 text-white rounded-3xl p-12 text-center shadow-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-10"></div>
-          <div className="relative">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Ready to transform your cooking?
-            </h2>
-            <p className="text-orange-100 mb-8 max-w-xl mx-auto">
-              Join thousands of home cooks who explore new flavors and eat healthier with EnjeraMind.
-            </p>
-            <Link
-              href="/signup"
-              className="inline-flex bg-white text-orange-600 px-8 py-4 rounded-full text-lg font-semibold hover:shadow-xl transition-all duration-300 hover:scale-105 items-center gap-2"
-            >
-              Get Started — It's Free <ArrowRight size={20} />
-            </Link>
-          </div>
+        {/* Subtle food icons at bottom */}
+        <div className="mt-12 text-center text-gray-400 text-sm flex items-center justify-center gap-4">
+          <span>🥘</span> <span>🍲</span> <span>🥗</span> <span>🍛</span> <span>🍜</span>
         </div>
-      </section>
+      </div>
     </main>
   );
 }
 
-function FeatureCard({ icon, title, description }: { icon: React.ReactNode; title: string; description: string }) {
+// Quick option card – more playful
+function QuickOption({ href, icon, title, description, color }: { href: string; icon: React.ReactNode; title: string; description: string; color: string }) {
   return (
-    <div className="group bg-white p-8 rounded-2xl shadow-lg border border-orange-100 hover:shadow-2xl hover:border-orange-300 transition-all duration-300 transform hover:-translate-y-1">
-      <div className="bg-gradient-to-br from-orange-100 to-amber-100 w-16 h-16 rounded-2xl flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
+    <Link
+      href={href}
+      className="group bg-white/90 backdrop-blur-sm p-6 rounded-3xl shadow-xl border-2 border-orange-100 hover:border-orange-300 transition-all hover:shadow-2xl flex items-center gap-5 transform hover:-translate-y-1"
+    >
+      <div className={`bg-${color}-100 p-4 rounded-2xl group-hover:scale-110 transition-transform`}>
         {icon}
       </div>
-      <h3 className="text-xl font-semibold text-gray-800 mb-2">{title}</h3>
-      <p className="text-gray-600 leading-relaxed">{description}</p>
-    </div>
+      <div>
+        <h3 className="font-bold text-gray-800 text-xl">{title}</h3>
+        <p className="text-gray-500">{description}</p>
+      </div>
+    </Link>
+  );
+}
+
+
+function FilterChip({
+  label,
+  icon,
+  active,
+  onClick,
+}: {
+  label: string;
+  icon: React.ReactNode;
+  active: boolean;
+  onClick: () => void;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={`inline-flex items-center gap-2 px-5 py-3 rounded-full text-sm font-medium transition-all ${
+        active
+          ? "bg-orange-500 text-white shadow-lg shadow-orange-500/30 scale-105"
+          : "bg-white border-2 border-orange-200 text-gray-700 hover:bg-orange-50 hover:border-orange-300"
+      }`}
+    >
+      {icon}
+      {label}
+    </button>
   );
 }
