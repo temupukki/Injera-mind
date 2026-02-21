@@ -71,21 +71,21 @@ export default function DashboardClient({ user }: DashboardClientProps) {
 
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-14">
           <QuickOption
-            href="#generate"
+            href="/dashboard/generate"
             icon={<ChefHat size={28} />}
             title="Generate Recipe"
             description="From your ingredients"
             color="orange"
           />
           <QuickOption
-            href="/explore"
+            href="/dashboard/explore"
             icon={<Compass size={28} />}
             title="Explore Recipes"
             description="Discover new dishes"
             color="amber"
           />
           <QuickOption
-            href="/preferences"
+            href="/dashboard/preferences"
             icon={<Settings size={28} />}
             title="Preferences"
             description="Diet & health goals"
@@ -93,7 +93,6 @@ export default function DashboardClient({ user }: DashboardClientProps) {
           />
         </div>
 
-        {/* Main action – big, bold, and friendly */}
         <div className="bg-white/90 backdrop-blur-xl rounded-[2.5rem] shadow-2xl border-2 border-orange-200 p-8 sm:p-10">
           <div className="flex items-center gap-3 mb-4">
             <Sparkles size={32} className="text-orange-500" />
