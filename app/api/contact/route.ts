@@ -17,7 +17,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Email format validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
       return NextResponse.json(
@@ -26,7 +25,6 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Save to database
     const contactMessage = await prisma.contactMessage.create({
       data: {
         name,
