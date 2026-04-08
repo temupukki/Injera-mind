@@ -14,17 +14,19 @@ export default function SignInPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleGoogleSignIn = async () => {
-    try {
-      await authClient.signIn.social({
-        provider: "google",
-        callbackURL: "/dashboard",
-      });
-    } catch (err) {
-      console.error("Google sign in error:", err);
-      setError("Google sign in failed. Please try again.");
-    }
-  };
+ const handleGoogleSignIn = async () => {
+  try {
+    await authClient.signIn.social({
+      provider: "google",
+      callbackURL: "/dashboard",
+    });
+    
+  } catch (err) {
+    console.error("Google sign in error:", err);
+    setError("Google sign in failed. Please try again.");
+  }
+
+};
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
